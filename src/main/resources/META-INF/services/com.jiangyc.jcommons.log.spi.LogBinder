@@ -1,0 +1,2 @@
+com.jiangyc.jcommons.log.jdk.JdkLogBinder
+com.jiangyc.jcommons.log.log4j.Log4jBinder
