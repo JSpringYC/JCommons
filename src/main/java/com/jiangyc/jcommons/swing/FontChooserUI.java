@@ -46,7 +46,7 @@ public class FontChooserUI extends ComponentUI {
     }
 
     private void installDefaults(JFontChooser jfc) {
-        dialogTitle = (String) UIManagers.get("FontChooser.DialogTitle");
+        dialogTitle = (String) UIManagers.get("FontChooser.dialogTitle");
         approveButtonText = (String) UIManagers.get("approveButtonText");
         approveButtonTooltipText = (String) UIManagers.get("approveButtonTooltipText");
         cancelButtonText = (String) UIManagers.get("cancelButtonText");
@@ -55,5 +55,15 @@ public class FontChooserUI extends ComponentUI {
         fontNameText = (String) UIManagers.get("FontChooser.fontNameText");
         fontStyleText = (String) UIManagers.get("FontChooser.fontStyleText");
         fontSizeText = (String) UIManagers.get("FontChooser.fontSizeText");
+    }
+
+    /**
+     * 获取当前的对话框标题
+     * @return
+     */
+    public String getDialogTitle(JFontChooser jfc) {
+        String title = jfc.getDialogTitle();
+
+        return (title == null) ? dialogTitle : title;
     }
 }

@@ -4,7 +4,8 @@ import java.util.ListResourceBundle;
 
 public class bundle_zh_CN extends ListResourceBundle {
 
-    private Object[][] contents = {{"FontChooser.dialogTitle", "字体选择"},
+    private Object[][] contents = {{"FontChooserUI", "com.jiangyc.jcommons.swing.FontChooserUI"},
+            {"FontChooser.dialogTitle", "字体选择"},
             {"approveButtonText", "确定"},
             {"approveButtonTooltipText", "确定"},
             {"cancelButtonText", "取消"},
