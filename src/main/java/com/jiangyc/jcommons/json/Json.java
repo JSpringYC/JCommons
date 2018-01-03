@@ -1,9 +1,7 @@
 package com.jiangyc.jcommons.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jiangyc.jcommons.json.spi.JsonProvider;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,13 +32,7 @@ public class Json {
     }
 
     public static JsonProvider getJsonProvider() {
-        if (jsonProviderMap.containsKey("fastjson")) {
-            return jsonProviderMap.get("fastjson");
-        } else if (jsonProviderMap.containsKey("jackson")) {
-            return jsonProviderMap.get("jackson");
-        }
-
-        return null;
+        return provider;
     }
 
     public static JsonProvider getJsonProvider(String id) {

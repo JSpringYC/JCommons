@@ -1,6 +1,7 @@
 package com.jiangyc.jcommons.util;
 
 public class Systems {
+
     // ********************
     //  Operating System
     // ********************
@@ -29,6 +30,7 @@ public class Systems {
     public static final String USER_COUNTRY = System.getProperty("user.country");
     public static final String USER_LANGUAGE = System.getProperty("user.language");
     public static final String USER_TIMEZONE = System.getProperty("user.timezone");
+
     // ********************
     //  Java
     // ********************

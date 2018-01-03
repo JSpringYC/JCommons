@@ -1,6 +1,5 @@
 package com.jiangyc.jcommons.json.spi;
 
-
 import java.io.Reader;
 
 public abstract class JsonProvider {
