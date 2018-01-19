@@ -1,6 +1,6 @@
 package com.jiangyc.jcommons.util;
 
-import org.springframework.beans.BeanUtils;
+//import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,7 +166,7 @@ public class Objects {
      * @param <T> 变量类型
      * @return 克隆出的变量
      */
-    public static <T> T clone(T t) {
+    /*public static <T> T clone(T t) {
         // 过滤基本的数字类型
         if (t instanceof Number) {
             return t;
@@ -182,7 +182,7 @@ public class Objects {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     /**
      * 变量克隆，创造一个指定类型的、值一致的不同对象。
@@ -192,7 +192,7 @@ public class Objects {
      * @param <V> 要克隆成的类型
      * @return 克隆出的变量
      */
-    public static <T, V> V clone(T t, Class<V> c) {
+    /*public static <T, V> V clone(T t, Class<V> c) {
         c = nonNull(c);
 
         try {
@@ -203,7 +203,7 @@ public class Objects {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     /**
      * 变量克隆，创造一个指定类型的、值一致的不同对象。
@@ -213,7 +213,7 @@ public class Objects {
      * @param <V> 要克隆成的类型
      * @return 克隆出的变量
      */
-    public static <T, V> Collection<V> clone(Collection<T> ts, Class<V> c) {
+    /*public static <T, V> Collection<V> clone(Collection<T> ts, Class<V> c) {
         ts = nonNull(ts);
         c = nonNull(c);
 
@@ -230,5 +230,5 @@ public class Objects {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }
