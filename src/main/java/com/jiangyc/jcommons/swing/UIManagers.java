@@ -9,7 +9,7 @@ public class UIManagers {
 
     static {
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle("com.jiangyc.jcommons.swing.bundle");
+            ResourceBundle bundle = ResourceBundle.getBundle("com.jiangyc.jcommons.swing.resources.bundle");
 
             for (String key : bundle.keySet()) {
                 defaults.put(key, bundle.getObject(key));

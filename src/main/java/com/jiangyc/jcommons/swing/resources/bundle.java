@@ -1,4 +1,4 @@
-package com.jiangyc.jcommons.swing;
+package com.jiangyc.jcommons.swing.resources;
 
 import java.util.ListResourceBundle;
 

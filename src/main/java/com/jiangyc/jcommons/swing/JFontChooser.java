@@ -83,7 +83,7 @@ public class JFontChooser extends JComponent implements Accessible {
      * 加载特定的UI资源
      */
     static {
-        UIManager.getDefaults().addResourceBundle("com.jiangyc.jcommons.swing.bundle");
+        UIManager.getDefaults().addResourceBundle("com.jiangyc.jcommons.swing.resources.bundle");
     }
 
     @Override
@@ -257,11 +257,7 @@ public class JFontChooser extends JComponent implements Accessible {
 
     public static void main(String[] args) {
         JFontChooser jfc = new JFontChooser();
-        JFileChooser jfc2;
-        FileChooserUI fcUI;
         jfc.setSize(400, 300);
-        jfc.setDialogTitle("Font Chooser");
-
         int i = jfc.showDialog(null);
 
         System.out.println(i);
