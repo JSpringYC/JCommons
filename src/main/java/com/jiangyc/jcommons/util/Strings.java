@@ -1,5 +1,10 @@
 package com.jiangyc.jcommons.util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * 字符串工具类，包含了操作字符串的一系列静态方法。
  *
@@ -21,7 +26,7 @@ public class Strings {
      * @param s 要检查的参数
      * @return 给定的参数是否为空
      */
-    public boolean isEmpty(String s) {
+    public static boolean isEmpty(String s) {
         return (s == null) ? true : s.length() == 0;
     }
 
@@ -30,7 +35,7 @@ public class Strings {
      * @param s
      * @return
      */
-    public boolean isTrimEmpty(String s) {
+    public static boolean isBlank(String s) {
         return (s == null) ? true : s.trim().length() == 0;
     }
 
@@ -39,7 +44,7 @@ public class Strings {
      * @param s 要判断的字符
      * @return 字符的长度，空字符将被看作长度为0
      */
-    public int length(String s) {
+    public static int length(String s) {
         return (isEmpty(s)) ? 0 : s.length();
     }
 
@@ -48,7 +53,60 @@ public class Strings {
      * @param s 要检查的长度
      * @return 字符的长度，空白字符将被看作长度为0
      */
-    public int trimLength(String s) {
-        return (isTrimEmpty(s)) ? 0 : s.trim().length();
+    public static int trimLength(String s) {
+        return (isBlank(s)) ? 0 : s.trim().length();
+    }
+
+    /**
+     * 获取字符Stream
+     * @param s 要转换的字符串
+     * @return {@code java.util.stream.Stream<String>}
+     */
+    public static Stream<Character> toCharStream(String s) {
+        return Objects.asList(Objects.transfor(s.toCharArray())).stream();
+    }
+
+    /**
+     * 字符串Join操作。默认不会跳过空白字符
+     * @param stream 要操作的字符串数组Stream
+     * @param separator 分隔符
+     * @return Join操作后的字符串
+     */
+    public static String join(Stream<String> stream, String separator) {
+        Objects.nonNull(stream);
+        Objects.nonNull(separator);
+
+        List<String> strings = stream.collect(Collectors.toList());
+        int size = strings.size();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < size; i++) {
+            sb.append(strings.get(i));
+            if (!(i == size-1)) {
+                sb.append(separator);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * 获取字符串Stream
+     * @param s 字符串源
+     * @return 字符串Stream
+     */
+    public static Stream<String> toStream(String s) {
+        return Arrays.asList(s).stream();
+    }
+
+    /**
+     * 获取字符串Stream
+     * @param ss 字符串源
+     * @return 字符串Stream
+     */
+    public static Stream<String> toStream(String[] ss) {
+        ss = Objects.nonNull(ss);
+
+        return Objects.asList(ss).stream();
     }
 }

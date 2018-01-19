@@ -20,7 +20,8 @@ public class Systems {
     /**
      * 是否为Windows系统
      */
-    public static final boolean IS_WINDOWS = OS_NAME.toLowerCase().contains("windows");
+    public static final boolean IS_OS_WINDOWS = OS_NAME.toLowerCase().contains("windows");
+    public static final boolean IS_OS_LINUX = OS_NAME.toLowerCase().contains("linux");
 
     // ********************
     //  User
