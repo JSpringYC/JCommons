@@ -83,7 +83,7 @@ public class JFontChooser extends JComponent implements Accessible {
      * 加载特定的UI资源
      */
     static {
-        UIManager.getDefaults().addResourceBundle("com.jiangyc.jcommons.swing.resources.bundle");
+        UIResources.load();
     }
 
     @Override

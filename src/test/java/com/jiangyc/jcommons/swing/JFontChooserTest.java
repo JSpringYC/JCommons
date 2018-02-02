@@ -10,16 +10,11 @@ public class JFontChooserTest {
 
     @Test
     public void test() {
-//        JFontChooser jfc = new JFontChooser();
-//
-//        JFileChooser jfc2;
-//        FileChooserUI fcUI;
-//        ButtonModel model;
-//        ButtonUI buttonUI;
-//
-//        System.out.println(jfc.getUI());
+        JFontChooser jfc = new JFontChooser();
 
-        Object approveButtonText = UIManagers.get("approveButtonText");
+        System.out.println(jfc.getUIClassID());
+
+        Object approveButtonText = UIManager.get("approveButtonText");
         System.out.println(approveButtonText);
     }
 }

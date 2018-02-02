@@ -46,15 +46,15 @@ public class FontChooserUI extends ComponentUI {
     }
 
     private void installDefaults(JFontChooser jfc) {
-        dialogTitle = (String) UIManagers.get("FontChooser.dialogTitle");
-        approveButtonText = (String) UIManagers.get("approveButtonText");
-        approveButtonTooltipText = (String) UIManagers.get("approveButtonTooltipText");
-        cancelButtonText = (String) UIManagers.get("cancelButtonText");
-        cancelButtonTooltipText = (String) UIManagers.get("cancelButtonTooltipText");
+        dialogTitle = (String) UIManager.get("FontChooser.dialogTitle");
+        approveButtonText = (String) UIManager.get("approveButtonText");
+        approveButtonTooltipText = (String) UIManager.get("approveButtonTooltipText");
+        cancelButtonText = (String) UIManager.get("cancelButtonText");
+        cancelButtonTooltipText = (String) UIManager.get("cancelButtonTooltipText");
 
-        fontNameText = (String) UIManagers.get("FontChooser.fontNameText");
-        fontStyleText = (String) UIManagers.get("FontChooser.fontStyleText");
-        fontSizeText = (String) UIManagers.get("FontChooser.fontSizeText");
+        fontNameText = (String) UIManager.get("FontChooser.fontNameText");
+        fontStyleText = (String) UIManager.get("FontChooser.fontStyleText");
+        fontSizeText = (String) UIManager.get("FontChooser.fontSizeText");
     }
 
     /**
