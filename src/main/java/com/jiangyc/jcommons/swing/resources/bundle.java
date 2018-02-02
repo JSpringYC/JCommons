@@ -12,7 +12,8 @@ public class bundle extends ListResourceBundle {
             {"cancelButtonTooltipText", "Cancel"},
             {"FontChooser.fontNameText", "Name"},
             {"FontChooser.fontStyleText", "Style"},
-            {"FontChooser.fontSizeText", "Size"}};
+            {"FontChooser.fontSizeText", "Size"},
+            {"FontChooser.fontPreviewText", "Preview"}};
 
     @Override
     protected Object[][] getContents() {

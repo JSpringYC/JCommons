@@ -12,7 +12,8 @@ public class bundle_zh_CN extends ListResourceBundle {
             {"cancelButtonTooltipText", "取消"},
             {"FontChooser.fontNameText", "名称"},
             {"FontChooser.fontStyleText", "样式"},
-            {"FontChooser.fontSizeText", "大小"}};
+            {"FontChooser.fontSizeText", "大小"},
+            {"FontChooser.fontPreviewText", "预览"}};
 
     @Override
     protected Object[][] getContents() {
