@@ -1,9 +1,12 @@
 package com.jiangyc.jcommons.swing;
 
+import com.jiangyc.jcommons.FontModel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.beans.PropertyChangeListener;
 
 /**
  * <code>JFontChooser</code>可插拔的外观和界面。
@@ -22,6 +25,9 @@ public class FontChooserUI extends ComponentUI {
     private String fontStyleText = null;
     private String fontSizeText = null;
     private String fontPreviewText = null;
+
+    private PropertyChangeListener propertyChangeListener;
+    private FontModel model;
 
     /**
      * 静态的实例化FontChooserUI的方法，Swing会通过反射技术调用此方法获取组件对应的UI。
@@ -194,6 +200,11 @@ public class FontChooserUI extends ComponentUI {
     }
 
     private void installListeners(JFontChooser jfc) {
+        propertyChangeListener = createPropertyChangeListener(jfc);
+        if(propertyChangeListener != null) {
+            jfc.addPropertyChangeListener(propertyChangeListener);
+        }
+        jfc.addPropertyChangeListener(getModel());
     }
 
     private void installDefaults(JFontChooser jfc) {
@@ -233,6 +244,17 @@ public class FontChooserUI extends ComponentUI {
         String approveButtonTooltipText = jfc.getApproveButtonToolTipText();
 
         return (approveButtonTooltipText == null) ? this.approveButtonTooltipText : approveButtonTooltipText;
+    }
+
+    public PropertyChangeListener createPropertyChangeListener(JFontChooser fc) {
+        return null;
+    }
+
+    public FontModel getModel() {
+        if (model == null) {
+            model = new FontModel();
+        }
+        return model;
     }
 
     /** UI Components */

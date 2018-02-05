@@ -3,8 +3,6 @@ package com.jiangyc.jcommons.swing;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.FileChooserUI;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -166,7 +164,12 @@ public class JFontChooser extends JComponent implements Accessible {
                 dialog.getRootPane().setWindowDecorationStyle(JRootPane.FONT_CHOOSER_DIALOG);
             }
         }
-        dialog.pack();
+//        dialog.pack();
+        if (getWidth() == 0 || getHeight() == 0) {
+            dialog.setSize(400, 380);
+        } else {
+            dialog.setSize(getSize());
+        }
         dialog.setLocationRelativeTo(parent);
 
         return dialog;
