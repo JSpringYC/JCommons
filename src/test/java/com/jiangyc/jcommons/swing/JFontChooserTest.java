@@ -12,7 +12,7 @@ public class JFontChooserTest {
     public void test() {
         JFontChooser jfc = new JFontChooser();
 
-        System.out.println(jfc.getUIClassID());
+        jfc.showDialog(null);
 
         Object approveButtonText = UIManager.get("approveButtonText");
         System.out.println(approveButtonText);
