@@ -176,10 +176,16 @@ public class FontChooserUI extends ComponentUI {
         cancelButton.setText("Cancel");
         actionPane.add(cancelButton);
         // Start of init components properties
+        //   approve button text
         approveButton.setText(getApproveButtonText(fc));
-        approveButton.setToolTipText(approveButtonTooltipText);
+        approveButton.setToolTipText(getApproveButtonTooltipText(fc));
+        if (fc.getApproveButtonMnemonic() != 0) {
+            approveButton.setMnemonic(fc.getApproveButtonMnemonic());
+        }
+        //   cancel button text
         cancelButton.setText(cancelButtonText);
         cancelButton.setToolTipText(cancelButtonTooltipText);
+        //   the title of titled border
         ((TitledBorder) fontPreviewBorderPane.getBorder()).setTitle(fontPreviewText);
         ((TitledBorder) fontNamePane.getBorder()).setTitle(fontNameText);
         ((TitledBorder) fontStylePane.getBorder()).setTitle(fontStyleText);
@@ -223,7 +229,13 @@ public class FontChooserUI extends ComponentUI {
         return (approveButtonText == null) ? this.approveButtonText : approveButtonText;
     }
 
-    /** UI属性 */
+    public String getApproveButtonTooltipText(JFontChooser jfc) {
+        String approveButtonTooltipText = jfc.getApproveButtonToolTipText();
+
+        return (approveButtonTooltipText == null) ? this.approveButtonTooltipText : approveButtonTooltipText;
+    }
+
+    /** UI Components */
     private JPanel contentPane;
     private JPanel fontPane;
     private JPanel actionPane;

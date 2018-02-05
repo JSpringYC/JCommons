@@ -42,6 +42,12 @@ public class JFontChooser extends JComponent implements Accessible {
     // **********************************
     /** Identifies change in the text on the approve (yes, ok) button. */
     public static final String APPROVE_BUTTON_TEXT_CHANGED_PROPERTY = "ApproveButtonTextChangedProperty";
+    /** Identifies change in the tooltip text on the approve (yes, ok) button. */
+    public static final String APPROVE_BUTTON_TOOLTIP_TEXT_CHANGED_PROPERTY = "ApproveButtonTooltipTextChangedProperty";
+    /** Identifies change in the mnemonic on the approve (yes, ok) button. */
+    public static final String APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY = "ApproveButtonMnemonicChangedProperty";
+    /** Identifies a change in the dialog title. */
+    public static final String DIALOG_TITLE_CHANGED_PROPERTY = "DialogTitleChangedProperty";
 
     // ********************************
     // ********* 对话框返回值 ***********
@@ -213,11 +219,16 @@ public class JFontChooser extends JComponent implements Accessible {
      * @param dialogTitle 要设置的字体选择对话框的标题
      */
     public void setDialogTitle(String dialogTitle) {
+        String oldValue = this.dialogTitle;
         this.dialogTitle = dialogTitle;
+        if(dialog != null) {
+            dialog.setTitle(dialogTitle);
+        }
+        firePropertyChange(DIALOG_TITLE_CHANGED_PROPERTY, oldValue, dialogTitle);
     }
 
     // ************************************
-    // ***** JFileChooser View Options *****
+    // ***** JFontChooser View Options *****
     // ************************************
 
     /**
@@ -255,11 +266,31 @@ public class JFontChooser extends JComponent implements Accessible {
         return approveButtonText;
     }
 
-    public static void main(String[] args) {
-        JFontChooser jfc = new JFontChooser();
-        jfc.setSize(400, 300);
-        int i = jfc.showDialog(null);
+    public String getApproveButtonToolTipText() {
+        return approveButtonToolTipText;
+    }
 
-        System.out.println(i);
+    public void setApproveButtonToolTipText(String approveButtonToolTipText) {
+        if (this.approveButtonToolTipText == approveButtonToolTipText) {
+            return;
+        }
+        String oldValue = this.approveButtonToolTipText;
+        this.approveButtonToolTipText = approveButtonToolTipText;
+        firePropertyChange(APPROVE_BUTTON_TOOLTIP_TEXT_CHANGED_PROPERTY, oldValue, approveButtonToolTipText);
+    }
+
+    public int getApproveButtonMnemonic() {
+        return approveButtonMnemonic;
+    }
+
+    public void setApproveButtonMnemonic(int approveButtonMnemonic) {
+        this.approveButtonMnemonic = approveButtonMnemonic;
+
+        if (this.approveButtonMnemonic == approveButtonMnemonic) {
+            return;
+        }
+        int oldValue = this.approveButtonMnemonic;
+        this.approveButtonMnemonic = approveButtonMnemonic;
+        firePropertyChange(APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY, oldValue, approveButtonMnemonic);
     }
 }
