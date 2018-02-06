@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,14 +40,18 @@ public class JdbcTemplate {
      * @param mapper Result
      * @param <T> 结果类型
      * @return 返回的结果
-     * @see Mapper#map(ResultSet)
+     * @see Mapper#map(ResultSet, int)
      */
     public <T> T query(String sql, Object[] args, Mapper<T> mapper) {
         Executor executor = execute(sql, args);
         ResultSet resultSet = executor.executeQuery();
 
         try {
-            return mapper.map(resultSet);
+            T t = null;
+            if (resultSet != null && resultSet.next()) {
+                t = mapper.map(resultSet, 1);
+            }
+            return t;
         } catch (SQLException e) {
             throw new RuntimeException("读取ResultSet失败！", e);
         } finally {
@@ -62,12 +67,18 @@ public class JdbcTemplate {
      * @param <T>
      * @return
      */
-    public <T> List<T> queryAsList(String sql, Object[] args, RowMapper<T> mapper) {
+    public <T> List<T> queryAsList(String sql, Object[] args, Mapper<T> mapper) {
         Executor executor = execute(sql, args);
         ResultSet resultSet = executor.executeQuery();
 
         try {
-            return mapper.mapAsList(resultSet);
+            int row = 1;
+            List<T> tList = new ArrayList<>();
+            while (resultSet != null && resultSet.next()) {
+                tList.add(mapper.map(resultSet, row));
+                row ++;
+            }
+            return tList;
         } catch (SQLException e) {
             throw new RuntimeException("读取ResultSet失败！", e);
         } finally {
