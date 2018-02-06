@@ -1,7 +1,5 @@
 package com.jiangyc.jcommons.swing;
 
-import com.jiangyc.jcommons.FontModel;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.ComponentUI;
