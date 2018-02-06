@@ -1,5 +1,7 @@
 package com.jiangyc.jcommons.swing;
 
+import com.jiangyc.jcommons.swing.plaf.FontChooserUI;
+
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;

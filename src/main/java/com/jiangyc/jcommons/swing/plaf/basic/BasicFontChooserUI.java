@@ -1,61 +1,110 @@
-package com.jiangyc.jcommons.swing;
+/*
+ * JCommons
+ * Copyright (C) 2018 姜永春
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.jiangyc.jcommons.swing.plaf.basic;
+
+import com.jiangyc.jcommons.swing.JFontChooser;
+import com.jiangyc.jcommons.swing.plaf.FontChooserUI;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
+import java.util.Locale;
 
-/**
- * <code>JFontChooser</code>可插拔的外观和界面。
- */
-public class FontChooserUI extends ComponentUI {
+public class BasicFontChooserUI extends FontChooserUI {
 
-    private JFontChooser fontChooser = null;
+    // label text
+    private String fontNameText = null;
+    private String fontStyleText = null;
+    private String fontSizeText = null;
+    private String fontPreviewText = null;
 
+    // OK- Cancel Button Text
     private String dialogTitle = null;
     private String approveButtonText = null;
     private String approveButtonTooltipText = null;
     private String cancelButtonText = null;
     private String cancelButtonTooltipText = null;
 
-    private String fontNameText = null;
-    private String fontStyleText = null;
-    private String fontSizeText = null;
-    private String fontPreviewText = null;
+    private JFontChooser fontchooser = null;
 
-    private PropertyChangeListener propertyChangeListener;
-    private FontModel model;
+    private PropertyChangeListener propertyChangeListener = null;
+
+    // The accessoryPanel is a container to place the JFileChooser accessory component
+    private JPanel accessoryPanel = null;
 
     /**
-     * 静态的实例化FontChooserUI的方法，Swing会通过反射技术调用此方法获取组件对应的UI。
-     * @return 实现此L&F的UI对象。
+     * Creates a {@code BasicFontChooserUI} implementation
+     * for the specified component. By default
+     * the {@code BasicLookAndFeel} class uses
+     * {@code createUI} methods of all basic UIs classes
+     * to instantiate UIs.
+     *
+     * @param c the {@code JFontChooser} which needs a UI
+     * @return the {@code BasicFontChooserUI} object
      *
      * @see UIDefaults#getUI(JComponent)
      */
     public static FontChooserUI createUI(JComponent c) {
-        return new FontChooserUI();
+        return new BasicFontChooserUI((JFontChooser) c);
+    }
+
+    public BasicFontChooserUI(JFontChooser fontChooser) {
     }
 
     @Override
     public void installUI(JComponent c) {
-        fontChooser = (JFontChooser) c;
+        accessoryPanel = new JPanel(new BorderLayout());
+        fontchooser = (JFontChooser) c;
 
-        installDefaults(fontChooser);
-        installComponents(fontChooser);
-        installListeners(fontChooser);
+//        createModel();
+        installDefaults(fontchooser);
+        installComponents(fontchooser);
+        installListeners(fontchooser);
+        fontchooser.applyComponentOrientation(fontchooser.getComponentOrientation());
     }
 
-    private void installComponents(JFontChooser fc) {
-        contentPane = new JPanel();
+    public void uninstallUI(JComponent c) {
+//        uninstallListeners(filechooser);
+//        uninstallComponents(filechooser);
+//        uninstallDefaults(filechooser);
+
+        if(accessoryPanel != null) {
+            accessoryPanel.removeAll();
+        }
+
+        accessoryPanel = null;
+        fontchooser.removeAll();
+//
+//        handler = null;
+    }
+
+    protected void installComponents(JFontChooser fc) {
+        accessoryPanel = new JPanel();
         // Start of add components to Font Chooser Panel
         fc.setLayout(new BorderLayout());
-        fc.add(contentPane, BorderLayout.CENTER);
+        fc.add(accessoryPanel, BorderLayout.CENTER);
         // End of add components to Font Chooser Panel
-        contentPane.setLayout(new BorderLayout(0, 0));
+        accessoryPanel.setLayout(new BorderLayout(0, 0));
         fontPane = new JPanel();
         fontPane.setLayout(new GridBagLayout());
-        contentPane.add(fontPane, BorderLayout.CENTER);
+        accessoryPanel.add(fontPane, BorderLayout.CENTER);
         fontSelectPane = new JPanel();
         fontSelectPane.setLayout(new GridBagLayout());
         GridBagConstraints gbc;
@@ -172,7 +221,7 @@ public class FontChooserUI extends ComponentUI {
         fontPreviewBorderPane.add(fontPreviewLabel, BorderLayout.CENTER);
         actionPane = new JPanel();
         actionPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        contentPane.add(actionPane, BorderLayout.SOUTH);
+        accessoryPanel.add(actionPane, BorderLayout.SOUTH);
         approveButton = new JButton();
         approveButton.setText("OK");
         actionPane.add(approveButton);
@@ -197,66 +246,69 @@ public class FontChooserUI extends ComponentUI {
         // End of init components properties
     }
 
-    private void installListeners(JFontChooser jfc) {
-        propertyChangeListener = createPropertyChangeListener(jfc);
-        if(propertyChangeListener != null) {
-            jfc.addPropertyChangeListener(propertyChangeListener);
-        }
-        jfc.addPropertyChangeListener(getModel());
+    protected void installListeners(JFontChooser fc) {
+//        propertyChangeListener = createPropertyChangeListener(fc);
+//        if(propertyChangeListener != null) {
+//            jfc.addPropertyChangeListener(propertyChangeListener);
+//        }
+//        fc.addPropertyChangeListener(getModel());
     }
 
-    private void installDefaults(JFontChooser jfc) {
-        dialogTitle = (String) UIManager.get("FontChooser.dialogTitle");
-        approveButtonText = (String) UIManager.get("approveButtonText");
-        approveButtonTooltipText = (String) UIManager.get("approveButtonTooltipText");
-        cancelButtonText = (String) UIManager.get("cancelButtonText");
-        cancelButtonTooltipText = (String) UIManager.get("cancelButtonTooltipText");
-
-        fontNameText = (String) UIManager.get("FontChooser.fontNameText");
-        fontStyleText = (String) UIManager.get("FontChooser.fontStyleText");
-        fontSizeText = (String) UIManager.get("FontChooser.fontSizeText");
-        fontPreviewText = (String) UIManager.get("FontChooser.fontPreviewText");
+    protected void installDefaults(JFontChooser fc) {
+//        installIcons(fc);
+        installStrings(fc);
+//        usesSingleFilePane = UIManager.getBoolean("FileChooser.usesSingleFilePane");
+//        readOnly           = UIManager.getBoolean("FileChooser.readOnly");
+//        TransferHandler th = fc.getTransferHandler();
+//        if (th == null || th instanceof UIResource) {
+//            fc.setTransferHandler(defaultTransferHandler);
+//        }
+//        LookAndFeel.installProperty(fc, "opaque", Boolean.FALSE);
     }
 
-    /**
-     * 获取当前的对话框标题
-     * @return
-     */
-    public String getDialogTitle(JFontChooser jfc) {
-        String title = jfc.getDialogTitle();
+    protected void installStrings(JFontChooser fc) {
 
-        return (title == null) ? dialogTitle : title;
+        Locale l = fc.getLocale();
+
+        dialogTitle = UIManager.getString("FontChooser.dialogTitle", l);
+        approveButtonText = UIManager.getString("approveButtonText", l);
+        approveButtonTooltipText = UIManager.getString("approveButtonTooltipText", l);
+        cancelButtonText = UIManager.getString("cancelButtonText", l);
+        cancelButtonTooltipText = UIManager.getString("cancelButtonTooltipText", l);
+
+        fontNameText = UIManager.getString("FontChooser.fontNameText", l);
+        fontStyleText = UIManager.getString("FontChooser.fontStyleText", l);
+        fontSizeText = UIManager.getString("FontChooser.fontSizeText", l);
+        fontPreviewText = UIManager.getString("FontChooser.fontPreviewText", l);
     }
 
-    /**
-     * 获取当前的对话框标题
-     * @return
-     */
-    public String getApproveButtonText(JFontChooser jfc) {
-        String approveButtonText = jfc.getApproveButtonText();
+    @Override
+    public String getApproveButtonText(JFontChooser fc) {
+        String approveButtonText = fc.getApproveButtonText();
 
         return (approveButtonText == null) ? this.approveButtonText : approveButtonText;
     }
 
-    public String getApproveButtonTooltipText(JFontChooser jfc) {
-        String approveButtonTooltipText = jfc.getApproveButtonToolTipText();
+    @Override
+    public String getApproveButtonTooltipText(JFontChooser fc) {
+        String approveButtonTooltipText = fc.getApproveButtonToolTipText();
 
         return (approveButtonTooltipText == null) ? this.approveButtonTooltipText : approveButtonTooltipText;
     }
 
-    public PropertyChangeListener createPropertyChangeListener(JFontChooser fc) {
-        return null;
+    @Override
+    public String getDialogTitle(JFontChooser fc) {
+        String title = fc.getDialogTitle();
+
+        return (title == null) ? dialogTitle : title;
     }
 
-    public FontModel getModel() {
-        if (model == null) {
-            model = new FontModel();
-        }
-        return model;
+    @Override
+    public JButton getDefaultButton(JFontChooser fc) {
+        return approveButton;
     }
 
     /** UI Components */
-    private JPanel contentPane;
     private JPanel fontPane;
     private JPanel actionPane;
     private JButton approveButton;
