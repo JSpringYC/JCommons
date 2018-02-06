@@ -252,6 +252,13 @@ public class BasicFontChooserUI extends FontChooserUI {
 //            jfc.addPropertyChangeListener(propertyChangeListener);
 //        }
 //        fc.addPropertyChangeListener(getModel());
+
+        approveButton.addActionListener((e) -> {
+            fc.approveSelection();
+        });
+        cancelButton.addActionListener((e) -> {
+            fc.cancelSelection();
+        });
     }
 
     protected void installDefaults(JFontChooser fc) {
@@ -280,6 +287,11 @@ public class BasicFontChooserUI extends FontChooserUI {
         fontStyleText = UIManager.getString("FontChooser.fontStyleText", l);
         fontSizeText = UIManager.getString("FontChooser.fontSizeText", l);
         fontPreviewText = UIManager.getString("FontChooser.fontPreviewText", l);
+    }
+
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        System.out.println("paint................");
     }
 
     @Override

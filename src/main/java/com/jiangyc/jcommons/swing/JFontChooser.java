@@ -5,9 +5,9 @@ import com.jiangyc.jcommons.swing.plaf.FontChooserUI;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 /**
  * <code>JFontChooser</code> 为用户提供了一种简单的机制来选择字体。
@@ -67,6 +67,18 @@ public class JFontChooser extends JComponent implements Accessible {
      * Return value if an error occurred.
      */
     public static final int ERROR_OPTION = -1;
+
+    /**
+     * Instruction to cancel the current selection.
+     * (same as pressing no or cancel).
+     */
+    public static final String CANCEL_SELECTION = "CancelSelection";
+
+    /**
+     * Instruction to approve the current selection
+     * (same as pressing yes or ok).
+     */
+    public static final String APPROVE_SELECTION = "ApproveSelection";
 
     // ******************************
     // *********** 实例变量 **********
@@ -233,7 +245,7 @@ public class JFontChooser extends JComponent implements Accessible {
     }
 
     // ************************************
-    // ***** JFontChooser View Options *****
+    // ***** JFontChooser View Options ****
     // ************************************
 
     /**
@@ -297,5 +309,74 @@ public class JFontChooser extends JComponent implements Accessible {
         int oldValue = this.approveButtonMnemonic;
         this.approveButtonMnemonic = approveButtonMnemonic;
         firePropertyChange(APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY, oldValue, approveButtonMnemonic);
+    }
+
+    /**
+     * Called by the UI when the user hits the Approve button
+     * (labeled "Open" or "Save", by default). This can also be
+     * called by the programmer.
+     * This method causes an action event to fire
+     * with the command string equal to
+     * <code>APPROVE_SELECTION</code>.
+     *
+     * @see #APPROVE_SELECTION
+     */
+    public void approveSelection() {
+        returnValue = APPROVE_OPTION;
+        if(dialog != null) {
+            dialog.setVisible(false);
+        }
+        fireActionPerformed(APPROVE_SELECTION);
+    }
+
+    /**
+     * Called by the UI when the user chooses the Cancel button.
+     * This can also be called by the programmer.
+     * This method causes an action event to fire
+     * with the command string equal to
+     * <code>CANCEL_SELECTION</code>.
+     *
+     * @see #CANCEL_SELECTION
+     */
+    public void cancelSelection() {
+        returnValue = CANCEL_OPTION;
+        if(dialog != null) {
+            dialog.setVisible(false);
+        }
+        fireActionPerformed(CANCEL_SELECTION);
+    }
+
+    /**
+     * Notifies all listeners that have registered interest for
+     * notification on this event type. The event instance
+     * is lazily created using the <code>command</code> parameter.
+     *
+     * @see EventListenerList
+     */
+    protected void fireActionPerformed(String command) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        long mostRecentEventTime = EventQueue.getMostRecentEventTime();
+        int modifiers = 0;
+        AWTEvent currentEvent = EventQueue.getCurrentEvent();
+        if (currentEvent instanceof InputEvent) {
+            modifiers = ((InputEvent)currentEvent).getModifiers();
+        } else if (currentEvent instanceof ActionEvent) {
+            modifiers = ((ActionEvent)currentEvent).getModifiers();
+        }
+        ActionEvent e = null;
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length-2; i>=0; i-=2) {
+            if (listeners[i]==ActionListener.class) {
+                // Lazily create the event:
+                if (e == null) {
+                    e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                            command, mostRecentEventTime,
+                            modifiers);
+                }
+                ((ActionListener)listeners[i+1]).actionPerformed(e);
+            }
+        }
     }
 }

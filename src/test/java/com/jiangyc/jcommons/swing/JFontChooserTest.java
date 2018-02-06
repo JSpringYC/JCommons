@@ -11,7 +11,6 @@ public class JFontChooserTest {
     @Test
     public void test() {
         JFontChooser jfc = new JFontChooser();
-
         jfc.showDialog(null);
 
         Object approveButtonText = UIManager.get("approveButtonText");
