@@ -2,16 +2,15 @@ package com.jiangyc.jcommons.io;
 
 import com.jiangyc.jcommons.util.Asserts;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
- * 文件操作工具类，提供了一系列文件和流操作的静态方法。
+ * 文件操作工具类，提供了一系列文件判断和读写操作的静态方法。
  */
 public class Files {
-    // 默认的缓存大小
+    /**
+     * 默认的缓存大小
+     */
     private static final int DEFAULT_BUFFER_SIZE = 4096;
 
     // ********************
@@ -19,71 +18,64 @@ public class Files {
     // ********************
 
     /**
-     * 确保给定的文件存在。当不存在时，将会抛出<code>IllegalArgumentException</code>异常
-     * @param file
-     * @return
+     * 判断给定的文件是否存在。如果存在则返回<code>true</code>，否则返回<code>false</code>.
+     * @param file 要判断的文件
+     * @return 给定的文件是否存在
      */
-    public static File requireExists(File file) {
-        if (file == null || !file.exists()) {
-            throw new IllegalArgumentException("file must be exists: " + file);
-        }
-        return file;
+    public static boolean isFile(File file) {
+        return (file != null && file.isFile()) ? true : false;
     }
 
     /**
-     * 确保给定的文件存在且类型为文件，否则将会抛出<code>IllegalArgumentException</code>异常
-     * @param file
-     * @return
+     * 判断给定的目录是否存在。如果存在则返回<code>true</code>，否则返回<code>false</code>.
+     * @param file 要判断的目录
+     * @return 给定的目录是否存在
      */
-    public static File requireFile(File file) {
-        requireExists(file);
+    public static boolean isDirectory(File file) {
+        return (file != null && file.isDirectory()) ? true : false;
+    }
+
+    /**
+     * 判断给定的文件是否存在。如果存在则返回之，否则尝试创建并返回，若创建失败则抛出<code>RuntimeException</code>异常.
+     * @param file 要判断的文件
+     * @param createParentFile 是否创建父目录
+     * @return 存在的文件
+     */
+    public static File requireFile(File file, boolean createParentFile) {
+        Asserts.notNull(file, "the file must not be null!");
+
+        if (!file.exists()) {
+            if (createNewFile(file, createParentFile)) {
+                return file;
+            }
+        }
 
         if (!file.isFile()) {
-            throw new IllegalArgumentException("the file must be an exist file: " + file);
+            throw new RuntimeException("file already exists and is not a file: " + file);
         }
 
         return file;
     }
 
     /**
-     * 确保给定的文件存在且类型为目录，否则将会抛出<code>IllegalArgumentException</code>异常
-     * @param file
-     * @return
+     * 判断给定的目录是否存在。如果存在则返回之，否则尝试创建并返回，若创建失败则抛出<code>RuntimeException</code>异常.
+     * @param dir 要判断的文件
+     * @return 存在的目录
      */
-    public static File requireDirectory(File file) {
-        requireExists(file);
+    public static File requireDirectory(File dir) {
+        Asserts.notNull(dir, "the file must not be null!");
 
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException("the file must be an exist directory: " + file);
+        if (!dir.exists()) {
+            if (!dir.mkdirs()) {
+                throw new RuntimeException("can not create directory: " + dir);
+            }
         }
 
-        return file;
-    }
+        if (!dir.isDirectory()) {
+            throw new RuntimeException("file already exists and is not a directory: " + dir);
+        }
 
-    // ********************
-    //  读写操作
-    // ********************
-
-    /**
-     * 以给定的文件作为源来创建一个输入流.
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    public static InputStream asInputStream(File file) throws IOException {
-        requireFile(file);
-        return Streams.asInputStream(file);
-    }
-
-    /**
-     * 以给定的文件作为源来创建一个输出流.
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    public static OutputStream asOutputStream(File file) throws IOException {
-        requireFile(file);
-        return Streams.asOutputStream(file);
+        return dir;
     }
 
     // ********************
