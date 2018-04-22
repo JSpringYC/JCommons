@@ -11,7 +11,7 @@ public class FilesTest {
     public void testCreateFile() throws IOException {
         File file = new File("C:\\Users\\jiangyc\\Desktop\\test\\test.txt");
 
-        File file2 = Files.requireFile(file);
+        File file2 = Files.requireFile(file, true);
 
         System.out.println(file2);
     }
