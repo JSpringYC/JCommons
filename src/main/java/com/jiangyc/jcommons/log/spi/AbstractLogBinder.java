@@ -21,8 +21,8 @@ public abstract class AbstractLogBinder implements LogBinder {
 
     /**
      * 基本的实现，加入了Map缓存功能
-     * @param name
-     * @return
+     * @param name log名称
+     * @return 日志
      */
     public synchronized Log getLog(String name) {
         Log log = logMap.get(name);
@@ -37,8 +37,8 @@ public abstract class AbstractLogBinder implements LogBinder {
 
     /**
      * 创建一个Log实现
-     * @param name
-     * @return
+     * @param name 日志名称
+     * @return 日志
      */
     public abstract Log createLog(String name);
 }
