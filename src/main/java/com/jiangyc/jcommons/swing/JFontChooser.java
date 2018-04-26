@@ -23,10 +23,12 @@ import java.awt.event.*;
  *            chooser.getSelectedFont().getName());
  *     }
  * </pre>
- * </p>
- * <strong>警告:</strong> Swing不是线程安全的。有关更多信息，
- * 请参阅<a href="package-summary.html#threading">
- * Swing的线程策略</a>.
+ * <p>
+ * <strong>Warning:</strong> Swing is not thread safe. For more
+ * information see <a
+ * href="package-summary.html#threading">Swing's Threading
+ * Policy</a>.
+ *
  * @author JSpringYC
  */
 public class JFontChooser extends JComponent implements Accessible {
@@ -115,17 +117,17 @@ public class JFontChooser extends JComponent implements Accessible {
     }
 
     /**
-     * 获取实现此组件的L&F的UI对象。
+     * Gets the UI object which implements the L&amp;F for this component.
      *
-     * @return FontChooserUI L&F的FontChooserUI对象
+     * @return the FontChooserUI object that implements the FontChooserUI L&amp;F
      */
     public FontChooserUI getUI() {
         return (FontChooserUI) ui;
     }
 
     /**
-     * 获取实现此组件的L&F的UI对象。
-     * @param newUI
+     * Sets the UI object which implements the L&amp;F for this component.
+     * @param newUI the new UI delegate
      */
     public void setUI(FontChooserUI newUI) {
         super.setUI(newUI);
@@ -351,6 +353,7 @@ public class JFontChooser extends JComponent implements Accessible {
      * notification on this event type. The event instance
      * is lazily created using the <code>command</code> parameter.
      *
+     * @param command The action key
      * @see EventListenerList
      */
     protected void fireActionPerformed(String command) {

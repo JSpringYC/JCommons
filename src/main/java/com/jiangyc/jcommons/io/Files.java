@@ -86,7 +86,7 @@ public class Files {
      * 创新新文件，当文件的父目录不存在时，根据参数决定是否创建父目录
      * @param file 要新建的文件
      * @param createParentFile 是否创建父目录
-     * @return
+     * @return 是否成功创建新文件
      */
     public static boolean createNewFile(File file, boolean createParentFile) {
         Asserts.notNull("文件不能为空!");
@@ -113,7 +113,7 @@ public class Files {
      * 创新新文件，当文件的父目录不存在时，根据参数决定是否创建父目录。当文件存在时，设置文件的最后修改时间.
      * @param file 要新建的文件
      * @param createParentFile 是否创建父目录
-     * @return
+     * @return 是否成功创建或修改文件
      */
     public static boolean touch(File file, boolean createParentFile) {
         Asserts.notNull("文件不能为空!");

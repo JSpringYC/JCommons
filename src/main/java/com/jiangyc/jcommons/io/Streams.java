@@ -65,6 +65,7 @@ public class Streams {
     /**
      * 将给定的对象包装成一个带有缓存功能的字符流。
      * @param input 要包装成字符流的对象，可以为Reader、InputStream、File、URI、和字符串形式的文件路径。
+     * @param charset 编码
      * @return 一个带有缓存功能的字符流，通常为<code>BufferedReader</code>
      * @throws IOException 当发生IO异常时，抛出此异常
      */
@@ -75,6 +76,7 @@ public class Streams {
     /**
      * 将给定的对象包装成一个带有缓存功能的字符流。
      * @param output 要包装成字符流的对象，可以为Writer、OutputStream、File、URI、和字符串形式的文件路径。
+     * @param charset 编码
      * @return 一个带有缓存功能的字符流，通常为<code>BufferedWriter</code>
      * @throws IOException 当发生IO异常时，抛出此异常
      */
@@ -139,6 +141,7 @@ public class Streams {
      * 读取数据，并将之转化为字节数据。
      * @param input 数据源
      * @return 读取的字节数据
+     * @throws IOException 当发生IO异常时抛出
      */
     public static byte[] toByteArray(Object input) throws IOException {
         BufferedInputStream bufis = (BufferedInputStream) asInputStream(input);

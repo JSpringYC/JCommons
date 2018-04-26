@@ -35,6 +35,9 @@ public abstract class FontChooserUI extends ComponentUI {
      * Returns default button for current <code>LookAndFeel</code>.
      * <code>JFileChooser</code> will use this button as default button
      * for dialog windows.
+     *
+     * @param fc JFontChooser instance
+     * @return The default button
      */
     public JButton getDefaultButton(JFontChooser fc) {
         return null;

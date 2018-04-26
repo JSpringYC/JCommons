@@ -19,10 +19,12 @@
 package com.jiangyc.jcommons.web;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Pagination<T> extends PageRequest {
     /** 页面数量 */
     private long pageCount;
