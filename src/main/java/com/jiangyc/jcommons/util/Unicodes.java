@@ -48,7 +48,7 @@ public class Unicodes {
         String[] strings = s.toLowerCase().split("\\\\u");
 
         return Arrays.stream(strings).filter((temp) -> !temp.isEmpty()).map(
-                temp -> Character.toString((char) Integer.parseInt(temp, 16))
+            temp -> Character.toString((char) Integer.parseInt(temp, 16))
         ).collect(Collectors.joining());
     }
 }

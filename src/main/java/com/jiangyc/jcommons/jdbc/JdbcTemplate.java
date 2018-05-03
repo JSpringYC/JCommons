@@ -61,11 +61,11 @@ public class JdbcTemplate {
 
     /**
      * 执行检索语句，返回数据集合。
-     * @param sql
-     * @param args
-     * @param mapper
-     * @param <T>
-     * @return
+     * @param sql SQL语句
+     * @param args 参数
+     * @param mapper 转换器
+     * @param <T> 返回值的真实类型
+     * @return 数据集合
      */
     public <T> List<T> queryAsList(String sql, Object[] args, Mapper<T> mapper) {
         Executor executor = execute(sql, args);

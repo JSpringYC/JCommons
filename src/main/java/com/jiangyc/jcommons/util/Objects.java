@@ -33,6 +33,7 @@ public class Objects {
     /**
      * 将复合类型数组包装成简单类型数组
      * @param chars 要包装的复合类型数组
+     * @param def The default character if the give Character array items is null.
      * @return 包装成的简单类型数组
      */
     public static char[] transfor(Character[] chars, char def) {

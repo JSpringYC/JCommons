@@ -57,7 +57,7 @@ public class Executor {
 
     /**
      * 执行更新操作，获取影响行数，并关闭连接
-     * @return
+     * @return 执行结果
      */
     public int executeUpdate() {
         try {

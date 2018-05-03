@@ -17,6 +17,7 @@ public interface Mapper<T> {
      * @param row 行数，从1开始
      * @param <T> 实体类型
      * @return 转换后的实体类
+     * @throws SQLException 当发生异常时抛出
      */
     <T> T map(ResultSet rs, int row) throws SQLException;
 }

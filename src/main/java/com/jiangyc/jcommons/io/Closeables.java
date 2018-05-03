@@ -40,7 +40,6 @@ public class Closeables {
      * 添加到第一个异常中。
      *
      * @param cs 要关闭的对象
-     * @return 关闭对象发生的异常
      */
     public static void close(Closeable... cs) {
         RuntimeException rtEx = null;

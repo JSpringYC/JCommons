@@ -32,8 +32,8 @@ public class Strings {
 
     /**
      * 判断给定的参数是否为空或过滤过空白字符后是否为空
-     * @param s
-     * @return
+     * @param s 字符串
+     * @return 字符串是否为空
      */
     public static boolean isBlank(String s) {
         return (s == null) ? true : s.trim().length() == 0;
