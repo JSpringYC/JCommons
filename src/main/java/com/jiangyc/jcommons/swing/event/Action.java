@@ -58,6 +58,7 @@ public interface Action extends Comparable<Action> {
 
     /**
      * Invoked when an action occurs.
+     * @param e the action event
      */
     void actionPerformed(ActionEvent e);
 
@@ -69,6 +70,7 @@ public interface Action extends Comparable<Action> {
 
     /**
      * Get KeyStroke for this Action
+     * @return the KeyStroke
      */
     KeyStroke getKeyStroke();
 }
