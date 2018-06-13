@@ -13,7 +13,11 @@ public class bundle extends ListResourceBundle {
             {"FontChooser.fontNameText", "Name"},
             {"FontChooser.fontStyleText", "Style"},
             {"FontChooser.fontSizeText", "Size"},
-            {"FontChooser.fontPreviewText", "Preview"}};
+            {"FontChooser.fontPreviewText", "Preview"},
+            {"FontChooser.fontStyle.Normal", "Normal"},
+            {"FontChooser.fontStyle.Bold", "Bold"},
+            {"FontChooser.fontStyle.Italic", "Italic"},
+            {"FontChooser.fontStyle.Bold_Italic", "Bold+Italic"}};
 
     @Override
     protected Object[][] getContents() {
