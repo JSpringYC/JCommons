@@ -50,6 +50,8 @@ public class JFontChooser extends JComponent implements Accessible {
     public static final String APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY = "ApproveButtonMnemonicChangedProperty";
     /** Identifies a change in the dialog title. */
     public static final String DIALOG_TITLE_CHANGED_PROPERTY = "DialogTitleChangedProperty";
+    /** Identifies a change in the dialog font. */
+    public static final String FONT_CHANGED_PROPERTY = "FontChangedProperty";
 
     // ********************************
     // ********* 对话框返回值 ***********
@@ -99,11 +101,13 @@ public class JFontChooser extends JComponent implements Accessible {
     private boolean fontStyleEditable = false;
     private boolean fontSizeEditable = false;
 
+    private Font selectedFont = null;
+
     /**
      * 加载特定的UI资源
      */
     static {
-        UIResources.load();
+        UIManager.getDefaults().addResourceBundle(UIDefaults2.RESOURCES_BUNDLE_KEY);
     }
 
     @Override
@@ -221,6 +225,11 @@ public class JFontChooser extends JComponent implements Accessible {
         return returnValue;
     }
 
+    public int showDialog(Component parent, Font font) {
+        setSelectedFont(font);
+        return showDialog(parent);
+    }
+
     // **************************
     // ***** Dialog Options *****
     // **************************
@@ -303,14 +312,33 @@ public class JFontChooser extends JComponent implements Accessible {
     }
 
     public void setApproveButtonMnemonic(int approveButtonMnemonic) {
-        this.approveButtonMnemonic = approveButtonMnemonic;
-
         if (this.approveButtonMnemonic == approveButtonMnemonic) {
             return;
         }
+
         int oldValue = this.approveButtonMnemonic;
         this.approveButtonMnemonic = approveButtonMnemonic;
         firePropertyChange(APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY, oldValue, approveButtonMnemonic);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        paintComponent(g);
+    }
+
+    public void setSelectedFont(Font selectedFont) {
+        if (this.selectedFont == selectedFont) {
+            return;
+        }
+
+        Font oldValue = this.selectedFont;
+        this.selectedFont = selectedFont;
+        firePropertyChange(FONT_CHANGED_PROPERTY, oldValue, selectedFont);
+    }
+
+    public Font getSelectedFont() {
+        return selectedFont;
     }
 
     /**

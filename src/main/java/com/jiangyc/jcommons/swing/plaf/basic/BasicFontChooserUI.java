@@ -20,13 +20,18 @@ package com.jiangyc.jcommons.swing.plaf.basic;
 
 import com.jiangyc.jcommons.swing.JFontChooser;
 import com.jiangyc.jcommons.swing.plaf.FontChooserUI;
+import com.jiangyc.jcommons.util.Strings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class BasicFontChooserUI extends FontChooserUI {
 
     // label text
@@ -43,6 +48,16 @@ public class BasicFontChooserUI extends FontChooserUI {
     private String cancelButtonTooltipText = null;
 
     private JFontChooser fontchooser = null;
+    private DefaultListModel<String> fontNameListModel;
+    private Map<String, String> fontNameMap;
+    private DefaultListModel<String> fontStyleListModel;
+    private Map<String, Integer> fontStyleMap;
+    private DefaultListModel<String> fontSizeListModel;
+    private Map<String, Integer> fontSizeMap;
+
+    private String selectedFontName = "Dialog";
+    private Integer selectedFontStyle = 0;
+    private Integer selectedFontSize = 10;
 
     private PropertyChangeListener propertyChangeListener = null;
 
@@ -68,6 +83,44 @@ public class BasicFontChooserUI extends FontChooserUI {
     public BasicFontChooserUI(JFontChooser fontChooser) {
     }
 
+    protected void changeFont(JFontChooser fc) {
+        if (fc.getSelectedFont() == null) {
+            Font font = new Font(selectedFontName, selectedFontStyle, selectedFontSize);
+            fc.setSelectedFont(font);
+        } else {
+            this.selectedFontName = fc.getSelectedFont().getFontName();
+            this.selectedFontStyle = fc.getSelectedFont().getStyle();
+            this.selectedFontSize = fc.getSelectedFont().getSize();
+        }
+
+        if (fontNameMap.containsKey(selectedFontName)) {
+            fontNameField.setText(selectedFontName);
+            fontNameList.setSelectedValue(selectedFontName, true);
+        }
+
+        for (String key : fontStyleMap.keySet()) {
+            int fontStyle = fontStyleMap.get(key);
+
+            if (fontStyle == selectedFontStyle) {
+                fontStyleField.setText(key);
+                fontStyleList.setSelectedValue(key, true);
+                break;
+            }
+        }
+
+        for (String key : fontSizeMap.keySet()) {
+            int fontSize = fontSizeMap.get(key);
+            fontSizeField.setText(key);
+
+            if (fontSize == selectedFontSize) {
+                fontSizeList.setSelectedValue(key, true);
+                break;
+            }
+        }
+
+        fontPreviewLabel.setFont(fc.getSelectedFont());
+    }
+
     @Override
     public void installUI(JComponent c) {
         accessoryPanel = new JPanel(new BorderLayout());
@@ -76,6 +129,7 @@ public class BasicFontChooserUI extends FontChooserUI {
 //        createModel();
         installDefaults(fontchooser);
         installComponents(fontchooser);
+        installFonts(fontchooser);
         installListeners(fontchooser);
         fontchooser.applyComponentOrientation(fontchooser.getComponentOrientation());
     }
@@ -217,7 +271,7 @@ public class BasicFontChooserUI extends FontChooserUI {
         fontPreviewLabel = new JLabel();
         fontPreviewLabel.setHorizontalAlignment(0);
         fontPreviewLabel.setHorizontalTextPosition(0);
-        fontPreviewLabel.setText("Label");
+        fontPreviewLabel.setText("<html>那只敏捷的棕毛狐狸跃过那只懒狗<br/>The quick brown fox jumps over the lazy dog.</html>");
         fontPreviewBorderPane.add(fontPreviewLabel, BorderLayout.CENTER);
         actionPane = new JPanel();
         actionPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
@@ -247,10 +301,10 @@ public class BasicFontChooserUI extends FontChooserUI {
     }
 
     protected void installListeners(JFontChooser fc) {
-//        propertyChangeListener = createPropertyChangeListener(fc);
-//        if(propertyChangeListener != null) {
-//            jfc.addPropertyChangeListener(propertyChangeListener);
-//        }
+        propertyChangeListener = new PropertyChangeEvent(fc);
+        if(propertyChangeListener != null) {
+            fc.addPropertyChangeListener(propertyChangeListener);
+        }
 //        fc.addPropertyChangeListener(getModel());
 
         approveButton.addActionListener((e) -> {
@@ -258,6 +312,30 @@ public class BasicFontChooserUI extends FontChooserUI {
         });
         cancelButton.addActionListener((e) -> {
             fc.cancelSelection();
+        });
+
+        fontNameList.addListSelectionListener(e -> {
+
+            if (!fontNameList.isSelectionEmpty()) {
+                selectedFontName = (String) fontNameList.getSelectedValue();
+                fc.setSelectedFont(new Font(selectedFontName, selectedFontStyle, selectedFontSize));
+            }
+        });
+
+        fontStyleList.addListSelectionListener(e -> {
+
+            if (!fontStyleList.isSelectionEmpty()) {
+                selectedFontStyle = fontStyleMap.get((String) fontStyleList.getSelectedValue());
+                fc.setSelectedFont(new Font(selectedFontName, selectedFontStyle, selectedFontSize));
+            }
+        });
+
+        fontSizeList.addListSelectionListener(e -> {
+
+            if (!fontSizeList.isSelectionEmpty()) {
+                selectedFontSize = fontSizeMap.get((String) fontSizeList.getSelectedValue());
+                fc.setSelectedFont(new Font(selectedFontName, selectedFontStyle, selectedFontSize));
+            }
         });
     }
 
@@ -271,6 +349,58 @@ public class BasicFontChooserUI extends FontChooserUI {
 //            fc.setTransferHandler(defaultTransferHandler);
 //        }
 //        LookAndFeel.installProperty(fc, "opaque", Boolean.FALSE);
+    }
+
+    protected void installFonts(JFontChooser fc) {
+        String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+
+        // 字体名称
+        fontNameListModel = new DefaultListModel<>();
+        fontNameMap = new HashMap<>();
+        for (String fontName : fontNames) {
+            fontNameListModel.addElement(fontName);
+            fontNameMap.put(fontName, fontName);
+        }
+        fontNameList.setModel(fontNameListModel);
+
+        // 字体样式
+        fontStyleListModel = new DefaultListModel<>();
+        fontStyleMap = new HashMap<>();
+        fontStyleMap.put(UIManager.getString("FontChooser.fontStyle.Normal"), Font.PLAIN);
+        fontStyleMap.put(UIManager.getString("FontChooser.fontStyle.Bold"), Font.BOLD);
+        fontStyleMap.put(UIManager.getString("FontChooser.fontStyle.Italic"), Font.ITALIC);
+        fontStyleMap.put(UIManager.getString("FontChooser.fontStyle.Bold_Italic"), Font.BOLD + Font.ITALIC);
+        fontStyleListModel.addElement(UIManager.getString("FontChooser.fontStyle.Normal"));
+        fontStyleListModel.addElement(UIManager.getString("FontChooser.fontStyle.Bold"));
+        fontStyleListModel.addElement(UIManager.getString("FontChooser.fontStyle.Italic"));
+        fontStyleListModel.addElement(UIManager.getString("FontChooser.fontStyle.Bold_Italic"));
+        fontStyleList.setModel(fontStyleListModel);
+
+        // 字体大小
+        fontSizeListModel = new DefaultListModel<>();
+        fontSizeMap = new HashMap<>();
+        Arrays.asList(8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 26, 28, 36, 48, 72).stream().forEach(i -> {
+            fontSizeMap.put("" + i, i);
+            fontSizeListModel.addElement("" + i);
+        });
+        String fontSizeExtra = UIManager.getString("FontChooser.fontSize.extra");
+        if (!Strings.isBlank(fontSizeExtra)) {
+            String[] strings = fontSizeExtra.split(",");
+            for (int i = 0; i < strings.length; i += 2) {
+                String fontSizeName = strings[i];
+
+                if (strings[i + 1].contains(".")) {
+//                    float fontSizeValue = Float.parseFloat(strings[i + 1]);
+//                    fontSizeMap.put(fontSizeName, fontSizeValue);
+                }
+                int fontSizeValue = Integer.parseInt(strings[i + 1]);
+                fontSizeMap.put(fontSizeName, fontSizeValue);
+                fontSizeListModel.addElement(fontSizeName);
+            }
+        }
+        fontSizeList.setModel(fontSizeListModel);
+
+        changeFont(fc);
     }
 
     protected void installStrings(JFontChooser fc) {
@@ -287,11 +417,6 @@ public class BasicFontChooserUI extends FontChooserUI {
         fontStyleText = UIManager.getString("FontChooser.fontStyleText", l);
         fontSizeText = UIManager.getString("FontChooser.fontSizeText", l);
         fontPreviewText = UIManager.getString("FontChooser.fontPreviewText", l);
-    }
-
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        System.out.println("paint................");
     }
 
     @Override
@@ -318,6 +443,24 @@ public class BasicFontChooserUI extends FontChooserUI {
     @Override
     public JButton getDefaultButton(JFontChooser fc) {
         return approveButton;
+    }
+
+    private class PropertyChangeEvent implements PropertyChangeListener {
+        /** JFontChooser */
+        private JFontChooser fc;
+
+        public PropertyChangeEvent(JFontChooser fc) {
+            this.fc = fc;
+        }
+
+        @Override
+        public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            String propertyName = evt.getPropertyName();
+
+            if (JFontChooser.FONT_CHANGED_PROPERTY.equals(propertyName)) {
+                changeFont(fc);
+            }
+        }
     }
 
     /** UI Components */

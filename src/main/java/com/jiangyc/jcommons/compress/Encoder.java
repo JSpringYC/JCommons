@@ -11,7 +11,7 @@ public interface Encoder {
 
     /**
      * 压缩配置
-     * @return
+     * @return 获取配置信息
      */
     Configure getConfigure();
 
@@ -19,6 +19,7 @@ public interface Encoder {
      * 压缩编码器
      * @param input 要压缩的源文件
      * @param output 压缩文件
+     * @throws IOException 当发生IO异常时抛出
      */
     void encode(File input, File output) throws IOException;
 
@@ -26,6 +27,7 @@ public interface Encoder {
      * 压缩多个文件
      * @param input 要压缩的源文件集合
      * @param output 压缩文件
+     * @throws IOException 当发生IO异常时抛出
      */
     void encode(List<File> input, File output) throws IOException;
 }
