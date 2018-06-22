@@ -4,6 +4,7 @@ import com.jiangyc.jcommons.util.Asserts;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,8 @@ public class Streams {
      * @return 一个带有缓存功能的字符流，通常为<code>BufferedReader</code>
      * @throws IOException 当发生IO异常时，抛出此异常
      */
-    public static Reader asReader(Object input, String charset) throws IOException {
+    public static Reader asReader(Object input, Charset charset) throws IOException {
+        charset = charset == null ? Charset.defaultCharset() : charset;
         return new BufferedReader(new InputStreamReader(asInputStream(input), charset));
     }
 
@@ -105,7 +107,7 @@ public class Streams {
      * @return 读取的字符串
      * @throws IOException 当发生IO异常时，抛出此异常
      */
-    public static String toString(Object input, String charset) throws IOException {
+    public static String toString(Object input, Charset charset) throws IOException {
         // 数据源
         Reader reader = asReader(input, charset);
         // 用来保存读取的字符串
@@ -123,7 +125,7 @@ public class Streams {
      * @return 读取的字符串
      * @throws IOException 当发生IO异常时，抛出此异常
      */
-    public static String[] toStringArray(Object input, String charset) throws IOException {
+    public static String[] toStringArray(Object input, Charset charset) throws IOException {
         BufferedReader bufferedReader = (BufferedReader) asReader(input, charset);
         String line  = null;
 
