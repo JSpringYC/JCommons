@@ -24,6 +24,7 @@ public abstract class AbstractLogBinder implements LogBinder {
      * @param name log名称
      * @return 日志
      */
+    @Override
     public synchronized Log getLog(String name) {
         Log log = logMap.get(name);
         // log不存在，则创建，并加入Map

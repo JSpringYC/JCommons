@@ -208,6 +208,8 @@ public class JFontChooser extends JComponent implements Accessible {
 
         dialog = createDialog(parent);
         dialog.addWindowListener(new WindowAdapter() {
+
+            @Override
             public void windowClosing(WindowEvent e) {
                 returnValue = CANCEL_OPTION;
             }

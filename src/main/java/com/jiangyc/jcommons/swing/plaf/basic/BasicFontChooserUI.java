@@ -134,6 +134,7 @@ public class BasicFontChooserUI extends FontChooserUI {
         fontchooser.applyComponentOrientation(fontchooser.getComponentOrientation());
     }
 
+    @Override
     public void uninstallUI(JComponent c) {
 //        uninstallListeners(filechooser);
 //        uninstallComponents(filechooser);
