@@ -1,4 +1,4 @@
-package com.jiangyc.jcommons.jdbc.annotation;
+package com.jiangyc.jcommons.jdbc.crm.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

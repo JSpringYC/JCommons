@@ -1,10 +1,8 @@
-package com.jiangyc.jcommons.jdbc.bean;
+package com.jiangyc.jcommons.jdbc.crm.bean;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

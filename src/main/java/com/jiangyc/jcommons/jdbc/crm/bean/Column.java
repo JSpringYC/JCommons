@@ -1,4 +1,4 @@
-package com.jiangyc.jcommons.jdbc.bean;
+package com.jiangyc.jcommons.jdbc.crm.bean;
 
 import lombok.Data;
 

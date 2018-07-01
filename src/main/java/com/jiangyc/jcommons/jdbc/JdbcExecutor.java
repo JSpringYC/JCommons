@@ -1,6 +1,10 @@
 package com.jiangyc.jcommons.jdbc;
 
+import com.jiangyc.jcommons.io.Closeables;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -9,32 +13,62 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 数据库执行器类
+ * JDBC执行器
+ *
+ * @author jiangyc
  */
 @Data
-public class Executor {
-    /** 数据源 */
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class JdbcExecutor {
+    /**
+     * JDBC数据源
+     */
+    @NonNull
     private DataSource dataSource;
-    /** 数据库连接 */
+
+    /**
+     * JDBC连接
+     */
     private Connection connection;
-    /** Statement */
+
+    /**
+     * prepared statement
+     */
     private PreparedStatement statement;
-    /** SQL语句 */
-    private String sql;
-    /** SQL语句参数 */
-    private Object[] args;
-    /** 结果集 */
+
+    /**
+     * JDBC结果集
+     */
     private ResultSet resultSet;
 
-    public Executor(DataSource dataSource) throws SQLException {
-        this.dataSource = dataSource;
-    }
+    /**
+     * SQL
+     */
+    private String sql;
 
-    public Executor(DataSource dataSource, String sql, Object[] args) {
-        this.dataSource = dataSource;
+    /**
+     * 参数
+     */
+    private Object[] args;
+
+    /**
+     * 创建JDBC执行器，并准备SQL
+     * @param dataSource 数据源
+     * @param sql 要执行的SQL
+     * @param args SQL参数
+     */
+    public JdbcExecutor(DataSource dataSource, String sql, Object[] args) {
+        this(dataSource);
+
         prepareStatement(sql, args);
     }
 
+    /**
+     * 准备SQL，并设置参数
+     * @param sql 要执行的SQL
+     * @param args SQL参数
+     */
     public void prepareStatement(String sql, Object[] args) {
         try {
             this.connection = dataSource.getConnection();
@@ -45,6 +79,7 @@ public class Executor {
 
         try {
             this.statement = connection.prepareStatement(sql);
+
             if (args != null && args.length > 0) {
                 for (int i = 0; i < args.length; i++) {
                     statement.setObject(i + 1, args[i]);
@@ -59,17 +94,21 @@ public class Executor {
      * 执行更新操作，获取影响行数，并关闭连接
      * @return 执行结果
      */
-    public int executeUpdate() {
+    public int update() {
         try {
             return statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("执行更新操作时失败：sql=" + sql + ", args=" + args, e);
+            throw new RuntimeException("执行更新操作时失败!" + sql + ", args=" + args, e);
         } finally {
             close();
         }
     }
 
-    public ResultSet executeQuery() {
+    /**
+     * 执行查询操作
+     * @return 执行结果集
+     */
+    public ResultSet query() {
         try {
             this.resultSet = statement.executeQuery();
             return resultSet;
