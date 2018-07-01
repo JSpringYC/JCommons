@@ -61,6 +61,26 @@ public class Closeables {
         }
     }
 
+    public static void close(AutoCloseable... cs) {
+        RuntimeException rtEx = null;
+
+        // 逐个关闭各个对象，如果出错，将其压入list中，待遍历完后抛出
+        for (AutoCloseable c : cs) {
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (Exception e) {
+                    rtEx = (rtEx == null) ? new RuntimeException() : rtEx;
+                    rtEx.addSuppressed(e);
+                }
+            }
+        }
+
+        if (rtEx != null) {
+            throw rtEx;
+        }
+    }
+
     /**
      * 静默的关闭对象
      *
@@ -75,6 +95,26 @@ public class Closeables {
                 try {
                     c.close();
                 } catch (IOException e) {
+                    // 忽略异常
+                }
+            }
+        }
+    }
+
+    /**
+     * 静默的关闭对象
+     *
+     * 该方法会屏蔽可能发生的异常
+     *
+     * @param cs 要关闭的对象
+     */
+    public static void closeQuietly(AutoCloseable... cs) {
+        // 逐个关闭各个对象
+        for (AutoCloseable c : cs) {
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (Exception e) {
                     // 忽略异常
                 }
             }
