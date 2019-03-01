@@ -26,10 +26,13 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Pagination<T> extends PageRequest {
+
     /** 页面数量 */
     private long pageCount;
+
     /** 总记录数 */
     private long count;
+
     /** 当前页的记录 */
     private List<T> records;
 

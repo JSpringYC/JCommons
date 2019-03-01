@@ -15,5 +15,5 @@ public interface LogBinder {
 
     boolean enable();
 
-    public Log getLog(String name);
+    Log getLog(String name);
 }

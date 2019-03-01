@@ -20,17 +20,36 @@ package com.jiangyc.jcommons.web;
 
 import lombok.Data;
 
+/**
+ * 分页请求
+ *
+ * @author jiangyc
+ */
 @Data
 public class PageRequest {
+
     /** 当前页，下表从1开始计 */
     private long pageIndex;
+
     /** 页面大小，最小为5 */
     private long pageSize;
 
+    /**
+     * 构建一个默认的分页请求
+     *
+     * @return
+     */
     public static PageRequest build() {
         return new PageRequest(1, 5);
     }
 
+    /**
+     * 根据给定的分页下标与分页大小构建分页请求
+     *
+     * @param pageIndex 分页下标，从1开始
+     * @param pageSize 分页大小
+     * @return 分页请求
+     */
     public static PageRequest build(long pageIndex, long pageSize) {
         return new PageRequest(pageIndex, pageSize);
     }
@@ -46,9 +65,5 @@ public class PageRequest {
 
     public void setPageSize(long pageSize) {
         this.pageSize = pageSize >= 5L ? pageSize : 5L;
-    }
-
-    public long getOffset() {
-        return (getPageIndex() - 1) * pageSize;
     }
 }
